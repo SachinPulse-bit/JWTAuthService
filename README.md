@@ -1,33 +1,30 @@
-# 🛡️ JWT Authentication in Spring Boot
+# JWT Authentication Service
 
-This project implements a **secure REST API with JWT authentication** in a **Spring Boot application**, using **Spring Security and MySQL**.
+## 📌 Overview
+This is a **Spring Boot JWT Authentication Service** that provides secure authentication and authorization using **Spring Security, JWT, and MySQL**. It supports user registration, login, and role-based access control.
 
 ## ✨ Features
-- User Registration & Login using JWT
-- Secure API endpoints with role-based access
-- JWT Token generation & validation
-- Authentication with Spring Security
-- MySQL Database Integration
-- Role-based authorization (`USER`, `ADMIN`)
+- **User Registration & Login**
+- **JWT Token Generation & Validation**
+- **Role-Based Access Control (Admin, User)**
+- **Secure API Endpoints with JWT**
+- **Spring Security Integration**
+- **MySQL Database for User Storage**
 
-## 🚀 Technologies Used
-- **Spring Boot** - Backend framework
-- **Spring Security** - Authentication & Authorization
-- **JWT (JSON Web Token)** - Token-based authentication
-- **JPA (Hibernate)** - ORM for database operations
-- **MySQL** - Relational Database
-- **Maven** - Dependency Management
+## 🛠️ Tech Stack
+- **Backend:** Spring Boot, Spring Security, JWT
+- **Database:** MySQL (via Spring Data JPA)
+- **Authentication:** JWT (JSON Web Token)
+- **Tooling:** Maven, Postman
 
----
-
-## 🏗️ Project Structure
+## ⚙️ Project Structure
 ```
-com.pulse
+com.jwtauthservice
  ├── controller
  │   ├── AuthController.java
  │   ├── UserController.java
  │
- ├── service 
+ ├── service
  │   ├── AuthService.java  
  │   ├── UserService.java  
  │   ├── CustomUserDetailsService.java  
@@ -51,71 +48,75 @@ com.pulse
  ├── DemoProjectApplication.java
 ```
 
----
+## 🚀 Installation & Setup
 
-## 📌 API Endpoints
+### 1️⃣ Clone the Repository
+```sh
+git clone https://github.com/SachinPulse-bit/JWTAuthService.git
+cd JWTAuthService
+```
 
-### 🔐 Authentication
-| Method | Endpoint         | Description          |
-|--------|-----------------|----------------------|
-| `POST` | `/auth/register` | Register new user   |
-| `POST` | `/auth/login`    | User login (JWT)    |
-| `GET`  | `/auth/ping`     | Test API connection |
-
-### 👤 User Management (Requires Authentication)
-| Method   | Endpoint           | Role         | Description             |
-|----------|-------------------|-------------|-------------------------|
-| `GET`    | `/api/users/getAll` | `ADMIN`     | Fetch all users         |
-| `GET`    | `/api/users/{id}`   | `USER` / `ADMIN` | Fetch user by ID |
-| `PUT`    | `/api/users/{id}`   | `USER` / `ADMIN` | Update user details |
-| `DELETE` | `/api/users/{id}`   | `ADMIN`     | Delete user by ID      |
-| `PATCH`  | `/api/users/{id}/role` | `ADMIN` | Change user role       |
-
----
-
-## ⚡ Running the Application
-### 📌 **1. Configure MySQL Database**
-Update `application.properties`:
+### 2️⃣ Configure MySQL Database
+Update `application.properties` with your MySQL credentials:
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/jwt_db
 spring.datasource.username=root
-spring.datasource.password=yourpassword
+spring.datasource.password=root
 spring.jpa.hibernate.ddl-auto=update
 ```
 
-### 📌 **2. Build & Run**
-#### Using Maven:
+### 3️⃣ Build and Run the Project
 ```sh
 mvn clean install
 mvn spring-boot:run
 ```
 
-#### Using Docker (Optional):
-```sh
-docker build -t jwt-auth-service .
-docker run -p 8080:8080 jwt-auth-service
-```
+## 🔥 API Endpoints
+### 🟢 Authentication APIs
+| Method | Endpoint       | Description           |
+|--------|--------------|----------------------|
+| POST   | `/auth/register` | Register a new user |
+| POST   | `/auth/login`    | Authenticate user & get JWT |
 
-### 📌 **3. Test with Postman**
-- Register a user using `/auth/register`
-- Login using `/auth/login` to get a JWT token
-- Use the token in the `Authorization` header (Bearer Token) to access secure endpoints.
+### 🔐 Protected APIs
+| Method | Endpoint        | Access |
+|--------|---------------|--------|
+| GET    | `/api/users/getAll` | ADMIN |
+| GET    | `/api/users/{id}` | ADMIN/User (Self) |
+| PUT    | `/api/users/{id}` | ADMIN/User (Self) |
+| DELETE | `/api/users/{id}` | ADMIN |
+| PATCH  | `/api/users/{id}/role` | ADMIN |
 
----
+## 🧪 Testing with Postman
+1. **Register User**
+   ```json
+   POST /auth/register
+   {
+       "username": "testuser",
+       "password": "password123",
+       "role": "USER"
+   }
+   ```
+2. **Login & Get JWT Token**
+   ```json
+   POST /auth/login
+   {
+       "username": "testuser",
+       "password": "password123"
+   }
+   ```
+   Response:
+   ```json
+   {
+       "token": "eyJhbGciOiJIUzI1NiIsIn..."
+   }
+   ```
+3. **Use JWT for Secured Endpoints**
+   - Add `Authorization: Bearer <JWT_TOKEN>` in **Headers**.
 
-## 🛠️ Future Enhancements
-- Implement **refresh tokens** for better security
-- Integrate with **MongoDB** instead of MySQL (optional)
-- Add **OAuth2 authentication** (Google, GitHub)
-
----
-
-## 🎯 Contribution
-Feel free to fork and contribute! Submit a pull request with improvements. 😊
-
----
+## 🎯 Contributing
+Contributions are welcome! Feel free to fork the repo, create a feature branch, and submit a PR.
 
 ## 📜 License
-This project is licensed under the **MIT License**.
-```
+This project is licensed under the MIT License.
 
